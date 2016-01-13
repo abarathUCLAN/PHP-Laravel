@@ -20,37 +20,36 @@ class AuthController extends Controller
 
     public function __construct()
     {
-        $this->middleware('guest', ['except' => 'getLogout']);
+        $this->middleware('guest');
     }
 
     protected function logout()
     {
-      $user_id=Authorizer::getResourceOwnerId();
-      DB::table('oauth_sessions')->where('owner_id', '=', $user_id)->delete();
+        $user_id=Authorizer::getResourceOwnerId();
+        DB::table('oauth_sessions')->where('owner_id', '=', $user_id)->delete();
     }
 
     protected function register(Request $request)
     {
-      $array = Input::all();
-      $validator = Validator::make($array, [
+        $array = Input::all();
+        $validator = Validator::make($array, [
           'firstname' => 'required|max:20',
           'lastname' => 'required|max:30',
           'email' => 'required|email|max:255|unique:users',
           'password' => 'required|min:6'
       ]);
 
-      if ($validator->fails())
-          return Response::json($validator->fails(),400);
-      else {
-          $user = new User();
-          $user->firstname= $request->input('firstname');
-          $user->lastname= $request->input('lastname');
-          $user->email= $request->input('email');
-          $user->password = \Illuminate\Support\Facades\Hash::make($request->input('password'));
-          $user->save();
+        if ($validator->fails()) {
+            return Response::json($validator->fails(), 400);
+        } else {
+            $user = new User();
+            $user->firstname= $request->input('firstname');
+            $user->lastname= $request->input('lastname');
+            $user->email= $request->input('email');
+            $user->password = \Illuminate\Support\Facades\Hash::make($request->input('password'));
+            $user->save();
 
-          return Response::json($user);
+            return Response::json($user);
         }
     }
 }
-?>

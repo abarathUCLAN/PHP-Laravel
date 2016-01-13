@@ -16,7 +16,10 @@ Route::group(['prefix' => 'api'], function () {
 
       Route::group(['prefix' => 'projects'], function () {
         Route::post('/',  [ 'uses' => 'ProjectController@createProject']);
+        Route::post('/addMemberToProject/{id}',  [ 'uses' => 'ProjectController@addMemberToProject']);
+        Route::post('/removeProjectMember/{id}',  [ 'uses' => 'ProjectController@removeProjectMember']);
         Route::get('/',  [ 'uses' => 'ProjectController@getProjects']);
+        Route::get('/getProjectMembers/{id}',  [ 'uses' => 'ProjectController@getProjectMembers']);
       });
 
       Route::group(['prefix' => 'invitations'], function () {
@@ -29,6 +32,7 @@ Route::group(['prefix' => 'api'], function () {
         Route::post('logout',  [ 'uses' => 'Auth\AuthController@logout']); //logout ---- /api/users/logout post
         Route::get('/',  [ 'uses' => 'UserController@getUserData']);  //get the User's data ---- /api/users get
         Route::post('changeData',  [ 'uses' => 'UserController@changeUserData']); //change the User's data ---- /api/users/changeData post
+        Route::post('/getUserByEmail',  [ 'uses' => 'UserController@getUserByEmail']);
       });
    });
 });

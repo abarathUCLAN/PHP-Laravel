@@ -1,9 +1,6 @@
 <?php namespace App\Http\Controllers;
 
-use Illuminate\Routing\Controller;
-use App\Invitation;
-use App\Project;
-use App\User;
+use App\ProjectDescription;
 use Input;
 
 class CrudController extends Controller
@@ -13,8 +10,13 @@ class CrudController extends Controller
     protected $modelsMapping = [
         'users' => User::class,
         'projects' => Project::class,
-        'invitations' => Invitation::class
+        'invitations' => Invitation::class,
+        'project_descriptions' => ProjectDescription::class,
     ];
+
+    public function __construct()
+    {
+    }
 
     protected function getModel()
     {
@@ -32,7 +34,12 @@ class CrudController extends Controller
         return $model::all();
     }
 
-    public function store()
+    public function store($input, $model)
+    {
+        return $model::create(array_except($input, $model));
+    }
+
+    public function storeWithModelId($input, $modelId)
     {
         $model = $this->getModel();
         return $model::create(array_except(Input::all(), static::MODEL_KEY));

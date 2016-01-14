@@ -41,7 +41,7 @@ class ProjectController extends Controller
           'email' => 'required|email',
           'type' => 'required|min:1|max:1'
       ]);
-        if ($validator->fails() || $request->input('type') < 0 || $request->input('email') > 2) {
+        if ($validator->fails() || $request->input('type') < 0 || $request->input('type') > 2) {
             return Response::json('validation failed.', 400);
         } else {
             $user = User::where('email', '=', $request->input('email'))->get();
@@ -62,13 +62,29 @@ class ProjectController extends Controller
             $users_projects_rel->Project_FK = $id;
             $users_projects_rel->type = $request->input('type');
             $users_projects_rel->save();
+            return Response::json($user);
         }
+    }
+
+    protected function getProjectName($id)
+    {
+        if ($id == null) {
+            return Response::json('invalid projectid', 400);
+        }
+
+        $project = Project::where('id', '=', $id)->first();
+
+        if (empty($project)) {
+            return Response::json('no project with that id available.', 400);
+        }
+
+        return Response::json($project);
     }
 
     protected function getProjectMembers($id)
     {
         return Response::json(DB::table('Users_Projects_Relationship')
-        ->select('users.firstname', 'users.lastname', 'users.email', 'type')
+        ->select('users.firstname', 'users.lastname', 'users.email', 'type', 'users.id')
         ->join('users', function ($join) use ($id) {
             $join->on('users.id', '=', 'Users_Projects_Relationship.User_FK')
                  ->where('Users_Projects_Relationship.Project_FK', '=', $id);

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\ProjectDescription;
 use App\Risk;
 use App\Milestone;
+use App\EffortEstimation;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Response;
@@ -184,45 +185,43 @@ class PreliminaryStudyController extends Controller
             return Response::json('invalid id', 400);
         }
 
-        $milestone = Milestone::where('Project_FK', '=', $id)->first();
+        $effort = EffortEstimation::where('Project_FK', '=', $id)->first();
 
-        if (empty($milestone)) {
-            return Response::json('no milestone available', 400);
+        if (empty($effort)) {
+            return Response::json('no effort estimation available', 400);
         }
 
-        return Response::json($milestone->content);
+        return Response::json($effort->content);
     }
 
     protected function deleteEffortEstimation($id)
     {
         if ($id == null) {
-            return Response::json('', 400);
+            return Response::json('id is null', 400);
         }
 
-        $milestone = Milestone::where('Project_FK', '=', $id)->first();
+        $effort = EffortEstimation::where('Project_FK', '=', $id)->first();
 
-        if (empty($milestone)) {
-            return Response::json('', 400);
+        if (empty($effort)) {
+            return Response::json('no effort estimation available.', 400);
         }
 
-        $milestone->delete();
-
-        return Response::json();
+        $effort->delete();
     }
 
     protected function insertEffortEstimation(Request $request, $id)
     {
-        $milestone = Milestone::where('Project_FK', '=', $id)->first();
-        if (!empty($milestone)) {
-            $milestone->content = json_encode($request->input('content'));
-            $milestone->save();
+        $effort = EffortEstimation::where('Project_FK', '=', $id)->first();
+        if (!empty($effort)) {
+            $effort->content = json_encode($request->input('content'));
+            $effort->save();
         } else {
-            $milestone = new Milestone();
+            $effort = new EffortEstimation();
 
-            $milestone->Project_FK = $id;
-            $milestone->content = json_encode($request->input('content'));
+            $effort->Project_FK = $id;
+            $effort->content = json_encode($request->input('content'));
 
-            $milestone->save();
+            $effort->save();
         }
     }
 }

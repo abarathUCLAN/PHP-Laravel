@@ -44,12 +44,54 @@ Route::group(['prefix' => 'api'], function () {
 
             Route::get('milestone/{id}',  [ 'uses' => 'PreliminaryStudyController@getMilestone']);
             Route::post('milestone/{id}',  [ 'uses' => 'PreliminaryStudyController@insertMilestone']);
-            Route::post('milestone/delete/{id}}',  [ 'uses' => 'PreliminaryStudyController@deleteMilestone']);
+            Route::post('milestone/delete/{id}',  [ 'uses' => 'PreliminaryStudyController@deleteMilestone']);
 
             Route::get('effortEstimation/{id}',  [ 'uses' => 'PreliminaryStudyController@getEffortEstimation']);
             Route::post('effortEstimation/{id}',  [ 'uses' => 'PreliminaryStudyController@insertEffortEstimation']);
-            Route::post('effortEstimation/delete/{id}}',  [ 'uses' => 'PreliminaryStudyController@deleteEffortEstimation']);
+            Route::post('effortEstimation/delete/{id}',  [ 'uses' => 'PreliminaryStudyController@deleteEffortEstimation']);
         });
+
+      Route::group(['prefix' => 'requirementSpecification'], function () {
+            Route::get('projectIntroduction/{id}',  [ 'uses' => 'RequirementSpecificationController@getProjectIntroduction']);
+            Route::post('projectIntroduction/{id}',  [ 'uses' => 'RequirementSpecificationController@insertProjectIntroduction']);
+            Route::post('projectIntroduction/delete/{id}',  [ 'uses' => 'RequirementSpecificationController@deleteProjectIntroduction']);
+
+            Route::get('needToHave/{id}',  [ 'uses' => 'RequirementSpecificationController@getNeedToHave']);
+            Route::post('needToHave/{id}',  [ 'uses' => 'RequirementSpecificationController@insertNeedToHave']);
+            Route::post('needToHave/delete/{id}/{needId}',  [ 'uses' => 'RequirementSpecificationController@deleteNeedToHave']);
+
+            Route::get('niceToHave/{id}',  [ 'uses' => 'RequirementSpecificationController@getNiceToHave']);
+            Route::post('niceToHave/{id}',  [ 'uses' => 'RequirementSpecificationController@insertNiceToHave']);
+            Route::post('niceToHave/delete/{id}/{niceId}',  [ 'uses' => 'RequirementSpecificationController@deleteNiceToHave']);
+
+            Route::get('projectResult/{id}',  [ 'uses' => 'RequirementSpecificationController@getProjectResult']);
+            Route::post('projectResult/{id}',  [ 'uses' => 'RequirementSpecificationController@insertProjectResult']);
+            Route::post('projectResult/delete/{id}',  [ 'uses' => 'RequirementSpecificationController@deleteProjectResult']);
+
+            Route::get('projectUse/{id}',  [ 'uses' => 'RequirementSpecificationController@getProjectUse']);
+            Route::post('projectUse/{id}',  [ 'uses' => 'RequirementSpecificationController@insertProjectUse']);
+            Route::post('projectUse/delete/{id}',  [ 'uses' => 'RequirementSpecificationController@deleteProjectUse']);
+
+            Route::get('actualState/{id}',  [ 'uses' => 'RequirementSpecificationController@getactualState']);
+            Route::post('actualState/{id}',  [ 'uses' => 'RequirementSpecificationController@insertactualState']);
+            Route::post('actualState/delete/{id}',  [ 'uses' => 'RequirementSpecificationController@deleteactualState']);
+
+            Route::get('targetState/{id}',  [ 'uses' => 'RequirementSpecificationController@getTargetState']);
+            Route::post('targetState/{id}',  [ 'uses' => 'RequirementSpecificationController@insertTargetState']);
+            Route::post('targetState/delete/{id}',  [ 'uses' => 'RequirementSpecificationController@deleteTargetState']);
+
+            Route::get('productData/{id}',  [ 'uses' => 'RequirementSpecificationController@getProductData']);
+            Route::post('productData/{id}',  [ 'uses' => 'RequirementSpecificationController@insertProductData']);
+            Route::post('productData/delete/{id}',  [ 'uses' => 'RequirementSpecificationController@deleteProductData']);
+
+            Route::get('nonFunctionalRequirement/{id}',  [ 'uses' => 'RequirementSpecificationController@getNonFunctionalRequirement']);
+            Route::post('nonFunctionalRequirement/{id}',  [ 'uses' => 'RequirementSpecificationController@insertNonFunctionalRequirement']);
+            Route::post('nonFunctionalRequirement/delete/{id}/{requirementId}',  [ 'uses' => 'RequirementSpecificationController@deleteNonFunctionalRequirement']);
+
+            Route::get('projectQuality/{id}',  [ 'uses' => 'RequirementSpecificationController@getProjectQuality']);
+            Route::post('projectQuality/{id}',  [ 'uses' => 'RequirementSpecificationController@insertProjectQuality']);
+            Route::post('projectQuality/delete/{id}',  [ 'uses' => 'RequirementSpecificationController@deleteProjectQuality']);
+      });
 
       Route::group(['prefix' => 'users'], function () {
         Route::post('logout',  [ 'uses' => 'Auth\AuthController@logout']); //logout ---- /api/users/logout post
@@ -59,15 +101,3 @@ Route::group(['prefix' => 'api'], function () {
       });
    });
 });
-
-
-
-
-
-
-/** // return the protected resource
- //echo “success authentication”;
- $user_id=Authorizer::getResourceOwnerId(); // the token user_id
- $user=\App\User::find($user_id);// get the user data from database
-return Response::json($user_id);
-}]);**/;

@@ -93,6 +93,47 @@ Route::group(['prefix' => 'api'], function () {
             Route::post('projectQuality/delete/{id}',  [ 'uses' => 'RequirementSpecificationController@deleteProjectQuality']);
       });
 
+      Route::group(['prefix' => 'functionalSpecification'], function () {
+        Route::get('functionalRequirement/{id}',  [ 'uses' => 'FunctionalSpecificationController@getFunctionalRequirement']);
+        Route::post('functionalRequirement/{id}',  [ 'uses' => 'FunctionalSpecificationController@insertFunctionalRequirement']);
+        Route::post('functionalRequirement/delete/{id}/{requirementId}',  [ 'uses' => 'FunctionalSpecificationController@deleteFunctionalRequirement']);
+
+        Route::get('projectImplementation/{id}',  [ 'uses' => 'FunctionalSpecificationController@getProjectImplementation']);
+        Route::post('projectImplementation/{id}',  [ 'uses' => 'FunctionalSpecificationController@insertProjectImplementation']);
+        Route::post('projectImplementation/delete/{id}',  [ 'uses' => 'FunctionalSpecificationController@deleteProjectImplementation']);
+
+      });
+
+      Route::group(['prefix' => 'finalization'], function () {
+        Route::get('protocol/{id}',  [ 'uses' => 'FinalizationController@getProtocol']);
+        Route::post('protocol/{id}',  [ 'uses' => 'FinalizationController@insertProtocol']);
+        Route::post('protocol/delete/{id}/{protocolId}',  [ 'uses' => 'FinalizationController@deleteProtocol']);
+
+        Route::get('projectManual/{id}',  [ 'uses' => 'FinalizationController@getProjectManual']);
+        Route::post('projectManual/{id}',  [ 'uses' => 'FinalizationController@insertProjectManual']);
+        Route::post('projectManual/delete/{id}',  [ 'uses' => 'FinalizationController@deleteProjectManual']);
+
+      });
+
+      Route::group(['prefix' => 'miscellaneous'], function () {
+        Route::get('presentation/{id}',  [ 'uses' => 'MiscellaneousController@getPresentation']);
+        Route::get('presentation/download/{presentationId}',  [ 'uses' => 'MiscellaneousController@downloadPresentation']);
+        Route::post('presentation/{id}',  [ 'uses' => 'MiscellaneousController@insertPresentation']);
+        Route::post('presentation/delete/{id}/{presentationId}',  [ 'uses' => 'MiscellaneousController@deletePresentation']);
+
+        Route::get('changeRequest/{id}',  [ 'uses' => 'MiscellaneousController@getChangeRequest']);
+        Route::post('changeRequest/{id}',  [ 'uses' => 'MiscellaneousController@insertChangeRequest']);
+        Route::post('changeRequest/delete/{id}/{changeId}',  [ 'uses' => 'MiscellaneousController@deleteChangeRequest']);
+
+        Route::get('styleGuide/{id}',  [ 'uses' => 'MiscellaneousController@getStyleGuide']);
+        Route::post('styleGuide/{id}',  [ 'uses' => 'MiscellaneousController@insertStyleGuide']);
+        Route::post('styleGuide/delete/{id}/{changeId}',  [ 'uses' => 'MiscellaneousController@deleteStyleGuide']);
+
+        Route::get('report/{id}',  [ 'uses' => 'MiscellaneousController@getReport']);
+        Route::post('report/{id}',  [ 'uses' => 'MiscellaneousController@insertReport']);
+        Route::post('report/delete/{id}/{changeId}',  [ 'uses' => 'MiscellaneousController@deleteReport']);
+      });
+
       Route::group(['prefix' => 'users'], function () {
         Route::post('logout',  [ 'uses' => 'Auth\AuthController@logout']); //logout ---- /api/users/logout post
         Route::get('/',  [ 'uses' => 'UserController@getUserData']);  //get the User's data ---- /api/users get

@@ -12,6 +12,7 @@ use Authorizer;
 use Response;
 use Illuminate\Http\Request;
 use Input;
+use Mail;
 
 class AuthController extends Controller
 {
@@ -21,6 +22,16 @@ class AuthController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+    }
+
+    protected function test()
+    {
+        Mail::send('emails.test', [], function ($message) {
+      $message
+            ->to('pdmsys10@gmail.com')
+            ->from('pdmsys10@gmail.com')
+            ->subject('TEST');
+          });
     }
 
     protected function logout()

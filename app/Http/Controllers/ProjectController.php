@@ -34,13 +34,27 @@ class ProjectController extends Controller
      }
     }
 
+    protected function getProjectRights($id)
+    {
+        $user_id=Authorizer::getResourceOwnerId();
+        if ($user_id == null) {
+            return Response::json('invalid user id', 401);
+        }
+        $users_projects_rel = UserOwnsProjectRel::where('User_FK', '=', $user_id)
+                                                ->where('Project_FK', '=', $id)->first();
+        if (empty($users_projects_rel)) {
+            return Response::json('no relationship object found', 401);
+        }
+        return Response::json($users_projects_rel->type);
+    }
+
     protected function addMemberToProject(Request $request, $id)
     {
         $array = Input::all();
         $validator = Validator::make($array, [
           'email' => 'required|email',
           'type' => 'required|min:1|max:1'
-      ]);
+        ]);
         if ($validator->fails() || $request->input('type') < 0 || $request->input('type') > 2) {
             return Response::json('validation failed.', 400);
         } else {
@@ -116,12 +130,11 @@ class ProjectController extends Controller
         $array = Input::all();
         $validator = Validator::make($array, [
           'name' => 'required|min:2|max:150|unique:projects',
-          'description' => 'required|min:10|max:300',
-          'acronym' => 'min:2|max:20'
+          'description' => 'required|min:10|max:300'
       ]);
 
         if ($validator->fails()) {
-            return Response::json('', 400);
+            return Response::json('validation failed', 400);
         } else {
             $user_id=Authorizer::getResourceOwnerId();
 

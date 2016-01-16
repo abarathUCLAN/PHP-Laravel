@@ -8,7 +8,7 @@ use App\User;
 use App\UserOwnsProjectRel;
 use Response;
 
-class ProjectRightsMiddleware
+class CheckForSpectatorMiddleware
 {
     /**
      * Handle an incoming request.
@@ -22,13 +22,12 @@ class ProjectRightsMiddleware
         $user_id=Authorizer::getResourceOwnerId();
         $projectUrlId = $request->route()->parameters()['id'];
 
-
         $relationship = UserOwnsProjectRel::where('User_FK', '=', $user_id)
                                           ->where('Project_FK', '=', $projectUrlId)
-                                          ->where('type', '=', 2)->first();
+                                          ->where('type', '>', 0)->first();
 
         if ($relationship == null) {
-            return Response::json('unauthorized for this project.', 401);
+            return Response::json('', 401);
         } else {
             return $next($request);
         }

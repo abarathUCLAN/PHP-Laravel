@@ -11,6 +11,7 @@ use Authorizer;
 use Validator;
 use Input;
 use Log;
+use Mail;
 
 class InvitationController extends Controller
 {
@@ -40,7 +41,8 @@ class InvitationController extends Controller
                 array_push($failedInvitations, $array[$i]);
             } else {
                 $invitation = new Invitation();
-
+                $urlcode = str_random(40);
+                $invitation->urlcode = $urlcode;
                 $invitation->firstname = $array[$i]['firstname'];
                 $invitation->lastname = $array[$i]['lastname'];
                 $invitation->email = $array[$i]['email'];
@@ -48,6 +50,17 @@ class InvitationController extends Controller
                 $invitation->owner = $id;
 
                 $invitation->save();
+
+                $data = array('firstname' => $array[$i]['firstname'],
+                              'lastname' => $array[$i]['lastname'],
+                              'urlcode' => $urlcode);
+                //$mail = $array[$i]['email']; uncomment for production
+                $mail = "barath1058@gmail.com";
+
+                Mail::send('emails.test', $data, function ($message) use ($mail) {
+                          $message->to($mail)
+                            ->subject('You got invited to Pdmsys! Check it out!');
+                  });
             }
         }
         if (empty($failedInvitations)) {
@@ -56,6 +69,7 @@ class InvitationController extends Controller
             return Response::json($failedInvitations, 400);
         }
     }
+
 
     protected function getProjectInvitations($id)
     {
@@ -102,6 +116,9 @@ class InvitationController extends Controller
         } else {
             $invitation = new Invitation();
 
+            $urlcode = str_random(40);
+
+            $invitation->urlcode =  $urlcode;
             $invitation->firstname =  $request->input('firstname');
             $invitation->lastname =  $request->input('lastname');
             $invitation->email =  $request->input('email');
@@ -109,6 +126,17 @@ class InvitationController extends Controller
             $invitation->owner =  $id;
 
             $invitation->save();
+
+            $data = array('firstname' => $request->input('firstname'),
+                          'lastname' => $request->input('lastname'),
+                          'urlcode' => $urlcode);
+            //$mail = $request->input('email'); uncomment for production
+            $mail = "barath1058@gmail.com";
+
+            Mail::send('emails.test', $data, function ($message) use ($mail) {
+                      $message->to($mail)
+                        ->subject('You got invited to Pdmsys! Check it out!');
+              });
 
             return Response::json($invitation);
         }

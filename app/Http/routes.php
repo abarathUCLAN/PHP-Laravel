@@ -11,6 +11,9 @@ Route::group(['prefix' => 'api'], function () {
         return Response::json(Authorizer::issueAccessToken());
     });
 
+    Route::post('users/checkIfUrlCodeIsValid',  [ 'uses' => 'UserController@checkIfUrlCodeIsValid']);
+    Route::post('users/registerUserWithUrlCode',  [ 'uses' => 'UserController@registerUserWithUrlCode']);
+
 
 
     Route::post('users/register', ['uses' => 'Auth\AuthController@register']); //register ---- /api/users/register post
@@ -145,6 +148,6 @@ Route::group(['prefix' => 'api'], function () {
         Route::get('/',  [ 'uses' => 'UserController@getUserData']);  //get the User's data ---- /api/users get
         Route::post('changeData',  [ 'uses' => 'UserController@changeUserData']); //change the User's data ---- /api/users/changeData post
         Route::post('/getUserByEmail',  [ 'uses' => 'UserController@getUserByEmail']);
-      });
+              });
    });
 });

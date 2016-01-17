@@ -24,15 +24,20 @@ class AuthController extends Controller
         $this->middleware('guest');
     }
 
+
     protected function test()
     {
-        Mail::send('emails.test', [], function ($message) {
-      $message
-            ->to('pdmsys10@gmail.com')
-            ->from('pdmsys10@gmail.com')
-            ->subject('TEST');
-          });
+        $data = array('firstname' => 'asdf',
+                    'lastname' => 'asdf2',
+                    'urlcode' => 'ret5uj435etzweyzgherdujhxuzhe54r');
+        $mail = "barath1058@gmail.com";
+        Mail::send('emails.test', $data, function ($message) use ($mail) {
+                    $message->to($mail)
+                      ->subject('You got invited to Pdmsys! Check it out!');
+            });
     }
+
+
 
     protected function logout()
     {

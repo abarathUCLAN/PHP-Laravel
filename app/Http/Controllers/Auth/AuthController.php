@@ -45,6 +45,11 @@ class AuthController extends Controller
         DB::table('oauth_sessions')->where('owner_id', '=', $user_id)->delete();
     }
 
+    protected function login(Request $request)
+    {
+        return Response::json(Authorizer::issueAccessToken());
+    }
+
     protected function register(Request $request)
     {
         $array = Input::all();

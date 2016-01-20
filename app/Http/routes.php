@@ -7,9 +7,7 @@ Route::pattern('id', '[0-9]+');
 Route::pattern('riskId', '[0-9]+');
 Route::group(['prefix' => 'api'], function () {
 
-    Route::post('users', function () { //login ---- /api/users post
-        return Response::json(Authorizer::issueAccessToken());
-    });
+    Route::post('users', [ 'uses' => 'Auth\AuthController@login']);
 
     Route::post('users/checkIfUrlCodeIsValid',  [ 'uses' => 'UserController@checkIfUrlCodeIsValid']);
     Route::post('users/registerUserWithUrlCode',  [ 'uses' => 'UserController@registerUserWithUrlCode']);

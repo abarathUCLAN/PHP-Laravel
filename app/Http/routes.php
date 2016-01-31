@@ -143,7 +143,7 @@ Route::group(['prefix' => 'api'], function () {
 
       Route::group(['prefix' => 'users'], function () {
         Route::post('logout',  [ 'uses' => 'Auth\AuthController@logout']); //logout ---- /api/users/logout post
-        Route::get('/',  [ 'uses' => 'UserController@getUserData']);  //get the User's data ---- /api/users get
+        Route::get('changeData',  [ 'uses' => 'UserController@getUserData']);  //get the User's data ---- /api/users get
         Route::post('changeData',  [ 'uses' => 'UserController@changeUserData']); //change the User's data ---- /api/users/changeData post
         Route::post('/getUserByEmail',  [ 'uses' => 'UserController@getUserByEmail']);
               });

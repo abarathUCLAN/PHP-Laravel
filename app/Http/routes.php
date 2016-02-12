@@ -23,6 +23,7 @@ Route::group(['prefix' => 'api'], function () {
           Route::post('/addMemberToProject/{id}',  [ 'uses' => 'ProjectController@addMemberToProject']);
           Route::post('/removeProjectMember/{id}',  [ 'uses' => 'ProjectController@removeProjectMember']);
           Route::get('/getProjectMembers/{id}',  [ 'uses' => 'ProjectController@getProjectMembers']);
+          Route::get('/dashboard/{id}',  [ 'uses' => 'ProjectController@getDashboardData']);
         });
         Route::post('/',  [ 'uses' => 'ProjectController@createProject']);
         Route::get('/',  [ 'uses' => 'ProjectController@getProjects']);

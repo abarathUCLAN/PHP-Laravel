@@ -6,7 +6,24 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Project;
+use App\ActualState;
+use App\ProjectUse;
+use App\FunctionalRequirement;
 use App\User;
+use App\ProjectManual;
+use App\AcceptanceProtocol;
+use App\ProjectImplementation;
+use App\ProjectQuality;
+use App\NonFunctionalRequirement;
+use App\ProductData;
+use App\ProjectIntroduction;
+use App\Risk;
+use App\TargetState;
+use App\NeedToHave;
+use App\Result;
+use App\NiceToHave;
+use App\EffortEstimation;
+use App\ProjectDescription;
 use App\UserOwnsProjectRel;
 use Response;
 use Authorizer;
@@ -154,5 +171,157 @@ class ProjectController extends Controller
 
             return Response::json($project->id);
         }
+    }
+
+    protected function getDashboardData($id)
+    {
+        $preliminaryStudy = self::calculatePercent(self::getPreliminaryStudyPercent($id), 3);
+        $requirementSpecification = self::calculatePercent(self::getRequirementSpecificationPercent($id), 10);
+        $functionalSpecification = self::calculatePercent(self::getFunctionalSpecificationPercent($id), 2);
+        $finalization = self::calculatePercent(self::getFinalizationPercent($id), 2);
+
+        return Response::json(array(
+            'preliminaryStudy' => $preliminaryStudy,
+            'requirementSpecification' => $requirementSpecification,
+            'functionalSpecification' => $functionalSpecification,
+            'finalization' => $finalization
+        ));
+    }
+
+    protected function getFinalizationPercent($id)
+    {
+        $counter = 0;
+
+        $protocol = AcceptanceProtocol::where('Project_FK', '=', $id)->first();
+
+        if (count($protocol) > 0) {
+            $counter++;
+        }
+
+        $manual = ProjectManual::where('Project_FK', '=', $id)->first();
+
+        if (count($manual) > 0) {
+            $counter++;
+        }
+        return $counter;
+    }
+
+    protected function getFunctionalSpecificationPercent($id)
+    {
+        $counter = 0;
+
+        $functional = FunctionalRequirement::where('Project_FK', '=', $id)->first();
+
+        if (count($functional) > 0) {
+            $counter++;
+        }
+
+        $implementation = ProjectImplementation::where('Project_FK', '=', $id)->first();
+
+        if (count($implementation) > 0) {
+            $counter++;
+        }
+        return $counter;
+    }
+
+    protected function getPreliminaryStudyPercent($id)
+    {
+        $counter = 0;
+
+        $description = ProjectDescription::where('Project_FK', '=', $id)->first();
+
+        if (count($description) > 0) {
+            $counter++;
+        }
+
+        $risk = Risk::where('Project_FK', '=', $id)->first();
+
+        if (count($risk) > 0) {
+            $counter++;
+        }
+
+        $effort = EffortEstimation::where('Project_FK', '=', $id)->first();
+
+        if (count($effort) > 0) {
+            $counter++;
+        }
+
+
+        return $counter;
+    }
+
+    protected function getRequirementSpecificationPercent($id)
+    {
+        $counter = 0;
+
+        $introduction = ProjectIntroduction::where('Project_FK', '=', $id)->first();
+
+        if (count($introduction) > 0) {
+            $counter++;
+        }
+
+        $non = NonFunctionalRequirement::where('Project_FK', '=', $id)->first();
+
+        if (count($non) > 0) {
+            $counter++;
+        }
+
+        $quality = ProjectQuality::where('Project_FK', '=', $id)->first();
+
+        if (count($quality) > 0) {
+            $counter++;
+        }
+
+        $need = NeedToHave::where('Project_FK', '=', $id)->first();
+
+        if (count($need) > 0) {
+            $counter++;
+        }
+
+        $nice = NiceToHave::where('Project_FK', '=', $id)->first();
+
+        if (count($nice) > 0) {
+            $counter++;
+        }
+
+        $result = Result::where('Project_FK', '=', $id)->first();
+
+        if (count($result) > 0) {
+            $counter++;
+        }
+
+        $use = ProjectUse::where('Project_FK', '=', $id)->first();
+
+        if (count($use) > 0) {
+            $counter++;
+        }
+
+        $actual = ActualState::where('Project_FK', '=', $id)->first();
+
+        if (count($actual) > 0) {
+            $counter++;
+        }
+
+        $target = TargetState::where('Project_FK', '=', $id)->first();
+
+        if (count($target) > 0) {
+            $counter++;
+        }
+
+        $data = ProductData::where('Project_FK', '=', $id)->first();
+
+        if (count($data) > 0) {
+            $counter++;
+        }
+
+        return $counter;
+    }
+
+    protected function calculatePercent($v, $max)
+    {
+        if ($v == 0) {
+            return 0;
+        }
+        return round((100 / $max) * $v, 0, PHP_ROUND_HALF_DOWN);
     }
 }

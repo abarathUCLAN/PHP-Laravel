@@ -27,9 +27,9 @@ class UserController extends Controller
         if ($validator->fails()) {
             return Response::json('validation failed.', 400);
         } else {
-            $user = User::where('email', '=', $request->input('email'))->get();
-            if (empty($user)) {
-                return Response::json('', 400);
+            $user = User::where('email', $request->input('email'))->get();
+            if ($user == null) {
+                return Response::json('invalid email', 400);
             }
             return Response::json($user, 200);
         }
@@ -92,10 +92,9 @@ class UserController extends Controller
     {
         $array = Input::all();
         $validator = Validator::make($array, [
-          'urlcode' => 'min:40|max:40|required',
-          'password' => 'min:8|max:16|required',
+          'urlcode' => 'min:39|max:40|required',
+          'password' => 'min:6|required',
       ]);
-
         if ($validator->fails()) {
             return Response::json('wrong urlcode or password', 400);
         } else {

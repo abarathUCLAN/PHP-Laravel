@@ -111,7 +111,6 @@ class FinalizationController extends Controller
         $validator = Validator::make($array, [
           'criteriaName' => 'required',
           'criteria' => 'required',
-          'note' => 'required',
           'requirement' => 'required'
         ]);
         if ($validator->fails()) {

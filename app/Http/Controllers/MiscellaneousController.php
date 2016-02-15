@@ -75,7 +75,7 @@ class MiscellaneousController extends Controller
             return Response::json('no presentation found', 400);
         }
 
-        return Response::download(storage_path() . "\\presentations\\" . $presentation->file);
+        return Response::download(base_path() . "/public/presentations/" . $presentation->file);
     }
 
     protected function deletePresentation($id, $presentationId)

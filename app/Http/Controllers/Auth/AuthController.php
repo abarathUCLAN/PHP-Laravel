@@ -13,6 +13,7 @@ use Response;
 use Illuminate\Http\Request;
 use Input;
 use Mail;
+use Log;
 
 class AuthController extends Controller
 {
@@ -23,21 +24,6 @@ class AuthController extends Controller
     {
         $this->middleware('guest');
     }
-
-
-    protected function test()
-    {
-        $data = array('firstname' => 'asdf',
-                    'lastname' => 'asdf2',
-                    'urlcode' => 'ret5uj435etzweyzgherdujhxuzhe54r');
-        $mail = "barath1058@gmail.com";
-        Mail::send('emails.test', $data, function ($message) use ($mail) {
-                    $message->to($mail)
-                      ->subject('You got invited to Pdmsys! Check it out!');
-            });
-    }
-
-
 
     protected function logout()
     {
@@ -61,6 +47,7 @@ class AuthController extends Controller
       ]);
 
         if ($validator->fails()) {
+            Log::error("Failed registration with email:" + $request->input('email'));
             return Response::json($validator->fails(), 400);
         } else {
             $user = new User();
@@ -69,7 +56,8 @@ class AuthController extends Controller
             $user->email= $request->input('email');
             $user->password = \Illuminate\Support\Facades\Hash::make($request->input('password'));
             $user->save();
-
+            
+            Log::error("Successfully registered " + $request->input('email'));
             return Response::json($user);
         }
     }
